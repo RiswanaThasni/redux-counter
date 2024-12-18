@@ -1,144 +1,46 @@
-import React from 'react';
-import { createStore } from 'redux';
-import { Provider, useSelector, useDispatch } from 'react-redux';
+import {  useDispatch, useSelector } from "react-redux";
+import React from 'react'
 
-const initialState = {
-    isLoggedIn: false,
-    username: '',
-};
 
-const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case 'LOGIN':
-            return { ...state, isLoggedIn: true, username: action.payload };
-        case 'LOGOUT':
-            return { ...state, isLoggedIn: false, username: '' };
-        default:
-            return state;
-    }
-};
+function App() {
 
-const store = createStore(reducer);
+  const count = useSelector((state)=>state.value)
+  const dispatch = useDispatch()
 
-const App = () => {
-    return (
-        <Provider store={store}>
-            <LoginApp />
-        </Provider>
-    );
-};
 
-const LoginApp = () => {
-    const isLoggedIn = useSelector((state) => state.isLoggedIn);
-    const username = useSelector((state) => state.username);
-    const dispatch = useDispatch();
+  const handleIncrement = (e)=>{
+    e.preventDefault()
 
-    const [inputUsername, setInputUsername] = React.useState('');
-    const [inputPassword, setInputPassword] = React.useState('');
+    dispatch({type : 'INCREMENT'})
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-        if (inputUsername === 'admin' && inputPassword === '1234') {
-            dispatch({ type: 'LOGIN', payload: inputUsername });
-        } else {
-            alert('Invalid credentials. Try username: admin and password: 1234.');
-        }
-    };
+  }
+ 
+  const handleDecrement = (e)=>{
+    e.preventDefault()
 
-    const handleLogout = () => {
-        dispatch({ type: 'LOGOUT' });
-        setInputUsername('');
-        setInputPassword('');
-    };
+    dispatch({type : 'DECREMENT'})
+  }
 
-    return (
-        <div
-            style={{
-                height: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: isLoggedIn ? '#a0d995' : '#f5b7b1',
-                flexDirection: 'column',
-            }}
-        >
-            {isLoggedIn ? (
-                <div style={{ textAlign: 'center' }}>
-                    <h1>Welcome, {username}!</h1>
-                    <img
-                        src="https://via.placeholder.com/300"
-                        alt="Welcome"
-                        style={{ borderRadius: '10px', marginBottom: '20px' }}
-                    />
-                    <button
-                        onClick={handleLogout}
-                        style={{
-                            padding: '10px 20px',
-                            backgroundColor: '#d9534f',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        Logout
-                    </button>
-                </div>
-            ) : (
-                <form
-                    onSubmit={handleLogin}
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        backgroundColor: 'white',
-                        padding: '20px',
-                        borderRadius: '10px',
-                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                    }}
-                >
-                    <h2>Login</h2>
-                    <input
-                        type="text"
-                        placeholder="Username"
-                        value={inputUsername}
-                        onChange={(e) => setInputUsername(e.target.value)}
-                        style={{
-                            marginBottom: '10px',
-                            padding: '10px',
-                            border: '1px solid #ccc',
-                            borderRadius: '5px',
-                        }}
-                    />
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={inputPassword}
-                        onChange={(e) => setInputPassword(e.target.value)}
-                        style={{
-                            marginBottom: '20px',
-                            padding: '10px',
-                            border: '1px solid #ccc',
-                            borderRadius: '5px',
-                        }}
-                    />
-                    <button
-                        type="submit"
-                        style={{
-                            padding: '10px 20px',
-                            backgroundColor: '#5cb85c',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        Login
-                    </button>
-                </form>
-            )}
-        </div>
-    );
-};
 
-export default App;
+  return (
+    
+    <div>
+    <form>
+      <button id='decrement' name='decrement' onClick={handleDecrement}>Decrement</button>
+      <label id='count'>Count : {count}</label>
+      <button id='increment' name="increment" onClick={handleIncrement}>Increment</button>
+
+    </form>
+      
+
+    
+    </div>
+      
+      
+   
+  )
+}
+
+
+
+export default App
